@@ -12,7 +12,11 @@ sudo parted  # by parted
   select /dev/sdb  # select a device
   print  # list partitions on "/dev/sdb"
   mkpart primary 3591 15600  # make a partition from 3,591M to 15,600M
+  mkpart primary 15600 100%  # create another partition for data storage
+  # resizepart part_id  # resize the partition
   quit  # exit. 
+
+sudo mkfs.ntfs /dev/sdb4  # format data partition to NTFS
 
 # 0x03 Ecrypt the partition with LUKS
 sudo cryptsetup --verbose --verify-passphrase luksFormat /dev/sdb3
@@ -35,3 +39,8 @@ sudo umount /dev/mapper/my_usb
 sudo cryptsetup luksClose /dev/mapper/my_usb
 
 # done
+
+# unlock session while screen locked
+loginctl list-sessions  
+loginctl unlock-session session-id
+# ctrl+alt+F7 switch to GUI
